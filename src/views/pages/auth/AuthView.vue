@@ -1,0 +1,112 @@
+<template>
+  <section class="auth">
+    <div class="auth__container">
+      <div>
+        <transition :name="transition" mode="out-in">
+          <component
+            :is="currentSection"
+            :payload="payload"
+            @next="handleNext"
+            @back="handleBack"
+          />
+        </transition>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { shallowRef } from 'vue'
+import FormEmail from './components/FormEmail.vue'
+import FormPerson from './components/FormPerson.vue'
+import FormPassword from './components/FormPassword.vue'
+import FormCompany from './components/FormCompany.vue'
+import FormReview from './components/FormReview.vue'
+
+import { AUTH_SECTIONS, IDENTiFICATION_TYPE } from '@/app/constants/auth'
+
+const SECTION_ENUM = {
+  [AUTH_SECTIONS.EMAIL]: FormEmail,
+  [AUTH_SECTIONS.PERSON]: FormPerson,
+  [AUTH_SECTIONS.PASSWORD]: FormPassword,
+  [AUTH_SECTIONS.COMPANY]: FormCompany,
+  [AUTH_SECTIONS.REVIEW]: FormReview
+}
+
+const payload = shallowRef({
+  email: null,
+  type: IDENTiFICATION_TYPE.CPF,
+  name: null,
+  identification: null,
+  date: null,
+  phone: null,
+  password: null
+})
+
+const currentSection = shallowRef(SECTION_ENUM.EMAIL)
+
+const transition = shallowRef('go')
+
+function handleNext({ payload: values, nextSection }) {
+  transition.value = 'go'
+  payload.value = Object.assign(payload.value, values)
+  currentSection.value = SECTION_ENUM[nextSection]
+}
+
+function handleBack(backSection) {
+  transition.value = 'back'
+  currentSection.value = SECTION_ENUM[backSection]
+}
+</script>
+
+<style lang="scss" scoped>
+.auth {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__container {
+    padding: 3rem;
+    background-color: white;
+    border-radius: 1.5rem;
+    width: 25rem;
+  }
+
+  &__button {
+    margin-top: 0.5rem;
+  }
+}
+
+.go-enter-active,
+.go-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.go-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.go-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.back-enter-active,
+.back-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.back-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.back-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>
