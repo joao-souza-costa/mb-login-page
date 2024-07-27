@@ -11,6 +11,7 @@
         id="password"
         type="password"
         label="Sua senha"
+        auto-complete="new-password"
         required
       />
     </div>

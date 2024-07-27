@@ -80,7 +80,7 @@ watch(
   justify-content: center;
 
   &__container {
-    padding: 3rem;
+    padding: 2.5rem;
     background-color: white;
     border-radius: 1.5rem;
     width: 25rem;

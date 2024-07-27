@@ -12,6 +12,7 @@
       :min
       :max
       :minlength
+      :autocomplete="autoComplete"
       :class="[$attrs.class, error && 'error']"
       @input.stop="validateInput"
       @invalid.prevent="validateInput"
@@ -24,10 +25,13 @@
 </template>
 
 <script setup>
-import { ERROR_MESSAGES } from '@/app/constants/input'
-import { getErrorKey } from '@/app/utils/error'
+import { GENERAL_INPUT_MESSAGES, PASSWORD_INPUT_MESSAGES } from '@/app/constants/messages'
+import { getInputErrorKey } from '@/app/utils/error'
 import { ref } from 'vue'
 
+const MESSAGES = {
+  password: PASSWORD_INPUT_MESSAGES
+}
 const model = defineModel()
 
 const el = ref(null)
@@ -69,6 +73,10 @@ const props = defineProps({
     type: String,
     default: null
   },
+  autoComplete: {
+    type: String,
+    default: null
+  },
   minlength: {
     type: String,
     default: null
@@ -76,27 +84,21 @@ const props = defineProps({
 })
 
 function validateInput({ target }) {
-  //TODO: Melhorar as mensagens desse método
-  const { validity, validationMessage } = target
+  const { validity } = target
 
   if (validity.valid) {
     error.value = false
     return (message.value = '')
   }
 
-  el.value.setCustomValidity('')
-  const key = getErrorKey(validity)
-
-  console.log({ key, validationMessage })
-
   error.value = true
 
-  if (key.includes('Missing')) return (message.value = ERROR_MESSAGES[key])
+  return (message.value = handleMessage(validity))
+}
 
-  if (key.includes('Short'))
-    return (message.value = `${ERROR_MESSAGES[key]} ${props.minlength} caracteres`)
-
-  return (message.value = `${ERROR_MESSAGES[key]} ${props.example}`)
+function handleMessage(validity) {
+  const key = getInputErrorKey(validity)
+  return MESSAGES[props.type]?.[key] || GENERAL_INPUT_MESSAGES[key].replace('$1', props.example)
 }
 </script>
 
