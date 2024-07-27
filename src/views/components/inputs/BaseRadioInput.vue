@@ -1,6 +1,6 @@
 <template>
   <div class="select-input">
-    <fieldset :class="[direction]">
+    <fieldset>
       <div v-for="(option, index) in optionsFormatted" :key="index">
         <input
           type="radio"
@@ -24,13 +24,6 @@ const value = defineModel()
 const props = defineProps({
   options: {
     type: Array
-  },
-  direction: {
-    type: String,
-    default: 'row',
-    validator(value) {
-      return ['row', 'column'].includes(value)
-    }
   }
 })
 

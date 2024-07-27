@@ -6,9 +6,9 @@
     <div class="section-review__form">
       <base-input
         v-model="payload.email"
+        :pattern="PATTERN_EMAIL"
         type="email"
         id="email"
-        :pattern="PATTERN_EMAIL"
         label="Endereço de email *"
         example="joao.souza@mail.com"
         required
@@ -27,20 +27,20 @@
 
       <base-input
         v-model="payload.date"
-        :max="yourDate"
-        :example="yourDate.split('-').reverse().join('/')"
-        id="date"
+        :max="maxDate"
+        :example
         :label="dateLabel"
+        id="date"
         type="date"
         required
       />
 
       <base-input
         v-model="payload.phone"
+        :pattern="PATTERN_PHONE"
         id="phone"
         label="Telefone *"
         type="tel"
-        :pattern="PATTERN_PHONE"
         example="0800619619"
         required
       />
@@ -50,7 +50,7 @@
         id="password"
         type="password"
         label="Sua senha"
-        minlength="8"
+        :pattern="PATTERN_PASSWORD"
         required
       />
     </div>
@@ -69,13 +69,16 @@ import {
   PATTERN_CNPJ,
   PATTERN_CPF,
   PATTERN_EMAIL,
-  PATTERN_PHONE
+  PATTERN_PHONE,
+  PATTERN_PASSWORD
 } from '@/app/constants/auth'
+import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
 import BaseButton from '@/views/components/BaseButton.vue'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
 import { computed, reactive } from 'vue'
 
-const yourDate = new Date().toISOString().split('T')[0] //TODO: FAZER UM ENUM E UM UTIL
+const maxDate = parseToISO8601(new Date())
+const example = parseToBrazilianFormat(new Date())
 
 const props = defineProps({
   payload: Object

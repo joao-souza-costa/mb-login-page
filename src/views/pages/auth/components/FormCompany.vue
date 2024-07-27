@@ -5,18 +5,18 @@
       <base-input v-model="payload.name" id="company-name" label="Razão social *" required />
       <base-input
         v-model="payload.identification"
+        :pattern="PATTERN_CNPJ"
         id="cnpj"
         label="CNPJ *"
         type="text"
         min="0"
-        :pattern="PATTERN_CNPJ"
         required
         example="99.999.999/9999-99"
       />
       <base-input
         v-model="payload.date"
-        :max="yourDate"
-        :example="yourDate.split('-').reverse().join('/')"
+        :max="maxDate"
+        :example
         id="foudDate"
         label="Data de abertura *"
         type="date"
@@ -24,10 +24,10 @@
       />
       <base-input
         v-model="payload.phone"
+        :pattern="PATTERN_PHONE"
         id="phone"
         label="Telefone *"
         type="tel"
-        :pattern="PATTERN_PHONE"
         example="0800619619"
         required
       />
@@ -42,6 +42,7 @@
 
 <script setup>
 import { AUTH_SECTIONS, PATTERN_CNPJ, PATTERN_PHONE } from '@/app/constants/auth'
+import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
 import BaseButton from '@/views/components/BaseButton.vue'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
 import { reactive } from 'vue'
@@ -52,7 +53,8 @@ const props = defineProps({
   payload: Object
 })
 
-const yourDate = new Date().toISOString().split('T')[0] //TODO: FAZER UM ENUM E UM UTIL
+const maxDate = parseToISO8601(new Date())
+const example = parseToBrazilianFormat(new Date())
 
 const payload = reactive({
   name: props.payload.name,

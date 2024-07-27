@@ -6,9 +6,9 @@
     <div class="section-email__form">
       <base-input
         v-model="payload.email"
+        :pattern="PATTERN_EMAIL"
         type="email"
         id="email"
-        :pattern="PATTERN_EMAIL"
         label="Endereço de email *"
         example="joao.souza@mail.com"
         required

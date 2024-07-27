@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { shallowRef } from 'vue'
+import { ref, shallowRef, watch } from 'vue'
 import FormEmail from './components/FormEmail.vue'
 import FormPerson from './components/FormPerson.vue'
 import FormPassword from './components/FormPassword.vue'
@@ -33,7 +33,7 @@ const SECTION_ENUM = {
   [AUTH_SECTIONS.REVIEW]: FormReview
 }
 
-const payload = shallowRef({
+const payload = ref({
   email: null,
   type: IDENTiFICATION_TYPE.CPF,
   name: null,
@@ -57,6 +57,17 @@ function handleBack(backSection) {
   transition.value = 'back'
   currentSection.value = SECTION_ENUM[backSection]
 }
+
+watch(
+  () => payload.value.type,
+  () =>
+    (payload.value = Object.assign(payload.value, {
+      name: null,
+      identification: null,
+      date: null,
+      phone: null
+    }))
+)
 </script>
 
 <style lang="scss" scoped>

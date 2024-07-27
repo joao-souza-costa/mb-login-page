@@ -7,10 +7,10 @@
     <div class="section-password__form">
       <base-input
         v-model="payload.password"
+        :pattern="PATTERN_PASSWORD"
         id="password"
         type="password"
         label="Sua senha"
-        :pattern="PATTERN_PASSWORD"
         required
       />
     </div>
