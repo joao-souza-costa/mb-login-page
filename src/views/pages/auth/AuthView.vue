@@ -47,7 +47,7 @@ const payload = ref({
 })
 
 const currentSection = shallowRef(SECTION_ENUM.EMAIL)
-const loading = shallowRef(true)
+const loading = shallowRef(false)
 const transition = shallowRef('go')
 
 function handleNext({ payload: values, nextSection }) {

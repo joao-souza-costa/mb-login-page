@@ -14,7 +14,6 @@ class FetchClient {
   async request(path, options) {
     const headers = new Headers()
 
-    console.log(path, options)
     if (options.body) {
       headers.append('Content-Type', 'application/json')
     }

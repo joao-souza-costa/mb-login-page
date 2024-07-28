@@ -14,6 +14,8 @@
         required
       />
 
+      <base-input v-model="payload.name" id="name" label="Nome *" required />
+
       <base-input
         v-model="payload.identification"
         :label="identificationLabel"

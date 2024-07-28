@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "./server/src",
+    "./dist"
+  ],
+  "exec": "node ./server/src/index.js"
+}
