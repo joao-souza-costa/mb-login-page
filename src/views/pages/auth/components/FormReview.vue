@@ -1,5 +1,5 @@
 <template>
-  <form class="section-review">
+  <form class="section-review" @submit.prevent="handleSubmit">
     <slot>
       <h2 class="section-review__title">Revise suas informações</h2>
     </slot>
@@ -56,8 +56,8 @@
     </div>
 
     <div class="section-password__buttons">
-      <base-button text="voltar" variant="light" @click.prevent="handleBack" />
-      <base-button text="continuar" />
+      <base-button :disabled="loading" text="voltar" variant="light" @click.prevent="handleBack" />
+      <base-button :loading text="continuar" />
     </div>
   </form>
 </template>
@@ -81,7 +81,8 @@ const maxDate = parseToISO8601(new Date())
 const example = parseToBrazilianFormat(new Date())
 
 const props = defineProps({
-  payload: Object
+  payload: Object,
+  loading: Boolean
 })
 
 const payload = reactive({
@@ -106,10 +107,14 @@ const identificationExample = computed(() =>
 
 const dateLabel = computed(() => (isCPF.value ? 'Data de nascimento *' : 'Data de abertura *'))
 
-const emit = defineEmits(['back'])
+const emit = defineEmits(['back', 'submitPayload'])
 
 function handleBack() {
   emit('back', AUTH_SECTIONS.PASSWORD)
+}
+
+function handleSubmit() {
+  emit('submitPayload', { payload })
 }
 </script>
 

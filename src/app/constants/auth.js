@@ -3,7 +3,8 @@ export const AUTH_SECTIONS = {
   PERSON: 'PERSON',
   COMPANY: 'COMPANY',
   PASSWORD: 'PASSWORD',
-  REVIEW: 'REVIEW'
+  REVIEW: 'REVIEW',
+  SUCCESS: 'SUCCESS'
 }
 
 export const IDENTiFICATION_TYPE = {
@@ -13,7 +14,7 @@ export const IDENTiFICATION_TYPE = {
 
 export const PATTERN_EMAIL = '[^@\\s]+@[^@\\s]+\\.[^@\\s]+'
 
-export const PATTERN_PASSWORD = '^\\d{8,}'
+export const PATTERN_PASSWORD = '^.{8,}'
 
 export const PATTERN_PHONE = '^\\d{10,11}'
 

@@ -25,12 +25,17 @@
 </template>
 
 <script setup>
-import { GENERAL_INPUT_MESSAGES, PASSWORD_INPUT_MESSAGES } from '@/app/constants/messages'
+import {
+  DATE_INPUT_MESSAGES,
+  GENERAL_INPUT_MESSAGES,
+  PASSWORD_INPUT_MESSAGES
+} from '@/app/constants/messages'
 import { getInputErrorKey } from '@/app/utils/error'
 import { ref } from 'vue'
 
 const MESSAGES = {
-  password: PASSWORD_INPUT_MESSAGES
+  password: PASSWORD_INPUT_MESSAGES,
+  date: DATE_INPUT_MESSAGES
 }
 const model = defineModel()
 

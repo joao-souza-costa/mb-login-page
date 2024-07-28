@@ -9,3 +9,7 @@ export const GENERAL_INPUT_MESSAGES = {
 export const PASSWORD_INPUT_MESSAGES = {
   patternMismatch: 'A senha exige o minimo de 8 caracteres'
 }
+
+export const DATE_INPUT_MESSAGES = {
+  valueMissing: 'Formato de data inválido'
+}

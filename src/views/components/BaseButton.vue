@@ -1,12 +1,19 @@
 <template>
-  <button type="submit" :class="['base-button', variant]">
-    <slot> {{ text }} </slot>
+  <button :disabled type="submit" :class="['base-button', variant]">
+    <slot v-if="!loading"> {{ text }} </slot>
+    <base-spinner v-else />
   </button>
 </template>
 
 <script setup>
+import BaseSpinner from './BaseSpinner.vue'
 defineProps({
   text: String,
+  loading: Boolean,
+  disabled: {
+    type: Boolean,
+    default: false
+  },
   variant: {
     type: String,
     default: 'dark' // dark | light
@@ -16,6 +23,9 @@ defineProps({
 
 <style lang="scss" scoped>
 .base-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 500ms;
   width: 100%;
   font-size: 1rem;

@@ -1,16 +1,16 @@
 <template>
   <section class="auth">
     <div class="auth__container">
-      <div>
-        <transition :name="transition" mode="out-in">
-          <component
-            :is="currentSection"
-            :payload="payload"
-            @next="handleNext"
-            @back="handleBack"
-          />
-        </transition>
-      </div>
+      <transition :name="transition" mode="out-in">
+        <component
+          :is="currentSection"
+          :payload
+          :loading
+          @next="handleNext"
+          @back="handleBack"
+          @submit-payload="handleSubmit"
+        />
+      </transition>
     </div>
   </section>
 </template>
@@ -22,15 +22,18 @@ import FormPerson from './components/FormPerson.vue'
 import FormPassword from './components/FormPassword.vue'
 import FormCompany from './components/FormCompany.vue'
 import FormReview from './components/FormReview.vue'
+import SectionSuccess from './components/SectionSuccess.vue'
 
 import { AUTH_SECTIONS, IDENTiFICATION_TYPE } from '@/app/constants/auth'
+import authService from '@/app/services/authService'
 
 const SECTION_ENUM = {
   [AUTH_SECTIONS.EMAIL]: FormEmail,
   [AUTH_SECTIONS.PERSON]: FormPerson,
   [AUTH_SECTIONS.PASSWORD]: FormPassword,
   [AUTH_SECTIONS.COMPANY]: FormCompany,
-  [AUTH_SECTIONS.REVIEW]: FormReview
+  [AUTH_SECTIONS.REVIEW]: FormReview,
+  [AUTH_SECTIONS.SUCCESS]: SectionSuccess
 }
 
 const payload = ref({
@@ -44,7 +47,7 @@ const payload = ref({
 })
 
 const currentSection = shallowRef(SECTION_ENUM.EMAIL)
-
+const loading = shallowRef(true)
 const transition = shallowRef('go')
 
 function handleNext({ payload: values, nextSection }) {
@@ -56,6 +59,17 @@ function handleNext({ payload: values, nextSection }) {
 function handleBack(backSection) {
   transition.value = 'back'
   currentSection.value = SECTION_ENUM[backSection]
+}
+
+function handleSubmit({ payload: values }) {
+  loading.value = true
+  authService
+    .createUser(Object.assign(payload.value, values))
+    .then(() => {
+      transition.value = 'go'
+      currentSection.value = SECTION_ENUM[AUTH_SECTIONS.SUCCESS]
+    })
+    .finally(() => (loading.value = false))
 }
 
 watch(
