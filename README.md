@@ -25,7 +25,7 @@ Login page from mercado-bitcoin test
   - Enter the command `docker-compose -up` in the terminal
   - After creating the container, access http://localhost:3000
 
-### Option 3:
+### Option 2:
 
 #### Prerequisites
 
