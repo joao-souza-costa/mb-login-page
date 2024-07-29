@@ -1,7 +1,7 @@
 class RegistrationController {
   hasEmptyField(body) {
     for (const key in body) {
-      if (!body[key]) return { key, error: 'is required' }
+      if (!body[key]) return { field: key, error: 'valueMissing' }
     }
     return body
   }

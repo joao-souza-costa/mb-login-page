@@ -8,6 +8,7 @@
   >
     <div class="form-review">
       <base-input
+        :ref="(el) => refMap.set('email', el)"
         v-model="payload.email"
         :pattern="PATTERN_EMAIL"
         type="email"
@@ -17,9 +18,16 @@
         required
       />
 
-      <base-input v-model="payload.name" id="name" label="Nome *" required />
+      <base-input
+        :ref="(el) => refMap.set('name', el)"
+        v-model="payload.name"
+        id="name"
+        label="Nome *"
+        required
+      />
 
       <base-input
+        :ref="(el) => refMap.set('identification', el)"
         v-model="payload.identification"
         :label="identification.label"
         :pattern="identification.pattern"
@@ -31,6 +39,7 @@
       />
 
       <base-input
+        :ref="(el) => refMap.set('date', el)"
         v-model="payload.date"
         :max="maxDate"
         :example
@@ -41,6 +50,7 @@
       />
 
       <base-input
+        :ref="(el) => refMap.set('tel', el)"
         v-model="payload.phone"
         :pattern="PATTERN_PHONE"
         id="phone"
@@ -51,6 +61,7 @@
       />
 
       <base-input
+        :ref="(el) => refMap.set('password', el)"
         v-model="payload.password"
         id="password"
         type="password"
@@ -68,6 +79,7 @@
 </template>
 
 <script setup>
+import { computed, reactive, ref } from 'vue'
 import BaseButton from '@/views/components/BaseButton.vue'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
 import BaseForm from '@/views/components/BaseForm.vue'
@@ -82,16 +94,19 @@ import {
   PATTERN_PASSWORD
 } from '@/app/constants/auth'
 import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
+import authService from '@/app/services/authService'
+import { GENERAL_INPUT_MESSAGES } from '@/app/constants/messages'
 
-import { computed, reactive } from 'vue'
+const refMap = new Map()
 
 const maxDate = parseToISO8601(new Date())
 const example = parseToBrazilianFormat(new Date())
 
 const props = defineProps({
-  payload: Object,
-  loading: Boolean
+  payload: Object
 })
+
+const loading = ref(null)
 
 const payload = reactive({
   email: props.payload.email,
@@ -120,7 +135,17 @@ function handleBack() {
 }
 
 function handleSubmit() {
-  emit('submitPayload', { payload })
+  loading.value = true
+  return authService
+    .createUser(Object.assign(props.payload, payload))
+    .then(() => {
+      emit('next', { payload: null, nextSection: AUTH_SECTIONS.SUCCESS })
+    })
+    .catch((e) => {
+      const { field, error } = e.body
+      refMap.get(field).setCustomValidity(GENERAL_INPUT_MESSAGES[error])
+    })
+    .finally(() => (loading.value = false))
 }
 </script>
 

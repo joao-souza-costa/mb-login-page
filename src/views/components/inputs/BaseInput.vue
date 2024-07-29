@@ -90,6 +90,7 @@ const props = defineProps({
 
 function validateInput({ target }) {
   const { validity } = target
+  el.value.setCustomValidity('') //cleaning custom errors
 
   if (validity.valid) {
     error.value = false
@@ -103,11 +104,15 @@ function validateInput({ target }) {
 
 function handleMessage(validity) {
   const key = getInputErrorKey(validity)
-  return MESSAGES[props.type]?.[key] || GENERAL_INPUT_MESSAGES[key].replace('$1', props.example)
+  return (
+    MESSAGES[props.type]?.[key]?.replace('$1', props.example) ||
+    GENERAL_INPUT_MESSAGES[key].replace('$1', props.example)
+  )
 }
 
 const setCustomValidity = (customMessage) => {
   message.value = customMessage
+  error.value = true
   return el.value.setCustomValidity(customMessage)
 }
 

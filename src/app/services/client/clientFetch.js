@@ -1,3 +1,5 @@
+import APIError from '@/app/errors/APIError'
+
 class FetchClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl
@@ -28,14 +30,19 @@ class FetchClient {
       method: options.method,
       body: JSON.stringify(options.body),
       headers
-    }).then((resp) => {
+    }).then(async (resp) => {
       const contentType = resp?.headers.get('Content-Type')
-      let response = resp.json()
-      if (contentType.includes('application/json') && resp.ok) {
+      let response = null
+
+      if (contentType.includes('application/json')) {
+        response = await resp.json()
+      }
+
+      if (resp.ok) {
         return response
       }
 
-      throw new Error(response)
+      throw new APIError(resp, response)
     })
   }
 }

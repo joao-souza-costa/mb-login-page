@@ -11,5 +11,6 @@ export const PASSWORD_INPUT_MESSAGES = {
 }
 
 export const DATE_INPUT_MESSAGES = {
-  valueMissing: 'Formato de data inválido'
+  valueMissing: 'Formato de data inválido',
+  rangeOverflow: 'A data precisa ser menor ou igual a $1'
 }

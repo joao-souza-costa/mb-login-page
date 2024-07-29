@@ -2,14 +2,7 @@
   <section class="auth">
     <div class="auth__container">
       <transition :name="transition" mode="out-in">
-        <component
-          :is="currentSection"
-          :payload
-          :loading
-          @next="handleNext"
-          @back="handleBack"
-          @submit-payload="handleSubmit"
-        />
+        <component :is="currentSection" :payload :loading @next="handleNext" @back="handleBack" />
       </transition>
     </div>
   </section>
@@ -25,7 +18,6 @@ import FormReview from './components/FormReview.vue'
 import SectionSuccess from './components/SectionSuccess.vue'
 
 import { AUTH_SECTIONS, IDENTiFICATION_TYPE } from '@/app/constants/auth'
-import authService from '@/app/services/authService'
 
 const SECTION_ENUM = {
   [AUTH_SECTIONS.EMAIL]: FormEmail,
@@ -52,7 +44,7 @@ const transition = shallowRef('go')
 
 function handleNext({ payload: values, nextSection }) {
   transition.value = 'go'
-  payload.value = Object.assign(payload.value, values)
+  if (values) payload.value = Object.assign(payload.value, values)
   currentSection.value = SECTION_ENUM[nextSection]
 }
 
@@ -60,18 +52,6 @@ function handleBack(backSection) {
   transition.value = 'back'
   currentSection.value = SECTION_ENUM[backSection]
 }
-
-function handleSubmit({ payload: values }) {
-  loading.value = true
-  authService
-    .createUser(Object.assign(payload.value, values))
-    .then(() => {
-      transition.value = 'go'
-      currentSection.value = SECTION_ENUM[AUTH_SECTIONS.SUCCESS]
-    })
-    .finally(() => (loading.value = false))
-}
-
 watch(
   () => payload.value.type,
   () =>
