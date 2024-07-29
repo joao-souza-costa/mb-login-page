@@ -1,35 +1,42 @@
-# mb-login-page
+## 💻 Project
 
-This template should help get you started developing with Vue 3 in Vite.
+Login page from mercado-bitcoin test
 
-## Recommended IDE Setup
+## Stacks
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+<img src="https://skillicons.dev/icons?i=html,css,javascript,docker,git,vue,vite,express" width="415px" alt="Technologies" />
 
-## Customize configuration
+## 📥 Installing the Project
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### Option 1:
 
-## Project Setup
+#### Prerequisites
 
-```sh
-npm install
-```
+- To use this option you must have Docker installed on your computer.q
+  - [Windows](https://docs.docker.com/windows/started)
+  - [MAC](https://docs.docker.com/mac/started/)
+  - [Linux](https://docs.docker.com/linux/started/)
 
-### Compile and Hot-Reload for Development
+#### Steps
 
-```sh
-npm run dev
-```
+- After installing docker, follow the following instructions:
 
-### Compile and Minify for Production
+  - Clone the project to your directory
+  - Enter the command `docker-compose -up` in the terminal
+  - After creating the container, access http://localhost:3000
 
-```sh
-npm run build
-```
+### Option 3:
 
-### Lint with [ESLint](https://eslint.org/)
+#### Prerequisites
 
-```sh
-npm run lint
-```
+- Node **(preferably version v18.16.0 or higher)**
+  - [Node.js](https://nodejs.org/en/download/)
+
+#### Steps
+
+- After installing node.js, follow the following instructions:
+
+  - Clone the project to your directory
+  - Type the command `yarn` or `npm install` to install the dependencies
+  - Enter the build command `yarn dev` or `npm run dev` to run the project
+  - Copy and paste the URL provided into your preferred browser
