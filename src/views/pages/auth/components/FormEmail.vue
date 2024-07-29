@@ -1,9 +1,6 @@
 <template>
-  <form class="section-email" @submit.prevent="submit">
-    <slot>
-      <h2 class="section-email__title">Seja bem vindo (a)</h2>
-    </slot>
-    <div class="section-email__form">
+  <base-form title="Seja bem vindo (a)" current-step="1" steps="4" @submit="submit">
+    <div class="form-email">
       <base-input
         v-model="payload.email"
         :pattern="PATTERN_EMAIL"
@@ -15,16 +12,20 @@
       />
       <base-radio-input v-model="payload.type" :options="options" id="type" />
     </div>
-    <base-button text="continuar" />
-  </form>
+
+    <template #button>
+      <base-button text="continuar" />
+    </template>
+  </base-form>
 </template>
 
 <script setup>
 import { reactive } from 'vue'
-import { AUTH_SECTIONS, IDENTiFICATION_TYPE, PATTERN_EMAIL } from '@/app/constants/auth'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
 import BaseRadioInput from '@/views/components/inputs/BaseRadioInput.vue'
 import BaseButton from '@/views/components/BaseButton.vue'
+import BaseForm from '@/views/components/BaseForm.vue'
+import { AUTH_SECTIONS, IDENTiFICATION_TYPE, PATTERN_EMAIL } from '@/app/constants/auth'
 
 const emit = defineEmits(['next'])
 
@@ -50,16 +51,10 @@ function submit() {
 </script>
 
 <style lang="scss" scoped>
-.section-email {
-  &__title {
-    margin-bottom: 1.25rem;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
+.form-email {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 </style>

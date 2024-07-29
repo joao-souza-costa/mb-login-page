@@ -1,16 +1,19 @@
 <template>
-  <form class="section-review" @submit.prevent="handleSubmit">
-    <slot>
-      <h2 class="section-review__title">Revise suas informações</h2>
-    </slot>
-    <div class="section-review__form">
+  <base-form
+    title="Revise suas informações"
+    steps="4"
+    current-step="4"
+    class="section-review"
+    @submit="handleSubmit"
+  >
+    <div class="form-review">
       <base-input
         v-model="payload.email"
         :pattern="PATTERN_EMAIL"
         type="email"
         id="email"
         label="Endereço de email *"
-        example="joao.souza@mail.com"
+        example="email@mail.com"
         required
       />
 
@@ -18,9 +21,9 @@
 
       <base-input
         v-model="payload.identification"
-        :label="identificationLabel"
-        :pattern="identificationPattern"
-        :example="identificationExample"
+        :label="identification.label"
+        :pattern="identification.pattern"
+        :example="identification.example"
         id="identification"
         type="text"
         min="0"
@@ -31,7 +34,7 @@
         v-model="payload.date"
         :max="maxDate"
         :example
-        :label="dateLabel"
+        :label="identification.dateLabel"
         id="date"
         type="date"
         required
@@ -57,14 +60,18 @@
       />
     </div>
 
-    <div class="section-password__buttons">
+    <template #button>
       <base-button :disabled="loading" text="voltar" variant="light" @click.prevent="handleBack" />
       <base-button :loading text="continuar" />
-    </div>
-  </form>
+    </template>
+  </base-form>
 </template>
 
 <script setup>
+import BaseButton from '@/views/components/BaseButton.vue'
+import BaseInput from '@/views/components/inputs/BaseInput.vue'
+import BaseForm from '@/views/components/BaseForm.vue'
+
 import {
   AUTH_SECTIONS,
   IDENTiFICATION_TYPE,
@@ -75,8 +82,7 @@ import {
   PATTERN_PASSWORD
 } from '@/app/constants/auth'
 import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
-import BaseButton from '@/views/components/BaseButton.vue'
-import BaseInput from '@/views/components/inputs/BaseInput.vue'
+
 import { computed, reactive } from 'vue'
 
 const maxDate = parseToISO8601(new Date())
@@ -100,14 +106,12 @@ const isCPF = computed(() => {
   return props.payload.type === IDENTiFICATION_TYPE.CPF
 })
 
-const identificationLabel = computed(() => (isCPF.value ? 'CPF *' : 'CNPJ *'))
-const identificationPattern = computed(() => (isCPF.value ? PATTERN_CPF : PATTERN_CNPJ))
-
-const identificationExample = computed(() =>
-  isCPF.value ? '999.999.999-99' : '99.999.999/9999-999'
-)
-
-const dateLabel = computed(() => (isCPF.value ? 'Data de nascimento *' : 'Data de abertura *'))
+const identification = computed(() => ({
+  label: isCPF.value ? 'CPF *' : 'CNPJ *',
+  pattern: isCPF.value ? PATTERN_CPF : PATTERN_CNPJ,
+  example: isCPF.value ? '999.999.999-99' : '99.999.999/9999-999',
+  dateLabel: isCPF.value ? 'Data de nascimento *' : 'Data de abertura *'
+}))
 
 const emit = defineEmits(['back', 'submitPayload'])
 
@@ -121,16 +125,10 @@ function handleSubmit() {
 </script>
 
 <style lang="scss" scoped>
-.section-review {
-  &__title {
-    margin-bottom: 1.25rem;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin: 1.25rem 0;
-  }
+.form-review {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 1.25rem 0;
 }
 </style>

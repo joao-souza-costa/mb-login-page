@@ -1,7 +1,6 @@
 <template>
-  <form class="section-person" @submit.prevent="handleNext">
-    <h2 class="section-person__title">Pessoa Física</h2>
-    <div class="section-person__form">
+  <base-form title="Pessoa Física" current-step="2" steps="4" @submit="handleNext">
+    <div class="form-person">
       <base-input v-model="payload.name" id="name" label="Nome *" required />
       <base-input
         v-model="payload.identification"
@@ -32,18 +31,19 @@
       />
     </div>
 
-    <div class="section-person__buttons">
+    <template #button>
       <base-button text="voltar" variant="light" @click.prevent="handleBack" />
       <base-button text="continuar" />
-    </div>
-  </form>
+    </template>
+  </base-form>
 </template>
 
 <script setup>
-import BaseInput from '@/views/components/inputs/BaseInput.vue'
 import { reactive } from 'vue'
-import { AUTH_SECTIONS, PATTERN_PHONE } from '@/app/constants/auth'
+import BaseInput from '@/views/components/inputs/BaseInput.vue'
+import BaseForm from '@/views/components/BaseForm.vue'
 import BaseButton from '@/views/components/BaseButton.vue'
+import { AUTH_SECTIONS, PATTERN_PHONE } from '@/app/constants/auth'
 import { PATTERN_CPF } from '@/app/constants/auth'
 import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
 
@@ -73,23 +73,10 @@ function handleNext() {
 </script>
 
 <style lang="scss" scoped>
-.section-person {
-  &__title {
-    margin-bottom: 1.25rem;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin: 1.25rem 0;
-  }
-
-  &__buttons {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    gap: 1rem;
-  }
+.form-person {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 1.25rem 0;
 }
 </style>

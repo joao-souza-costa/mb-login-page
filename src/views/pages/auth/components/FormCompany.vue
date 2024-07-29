@@ -1,7 +1,6 @@
 <template>
-  <form class="section-company" @submit.prevent="handleNext">
-    <h2 class="section-company__title">Pessoa Juridica</h2>
-    <div class="section-company__form">
+  <base-form title="Pessoa Juridica" steps="4" current-step="2" @submit="handleNext">
+    <div class="form-company">
       <base-input v-model="payload.name" id="company-name" label="Razão social *" required />
       <base-input
         v-model="payload.identification"
@@ -33,19 +32,20 @@
       />
     </div>
 
-    <div class="section-company__buttons">
+    <template #button>
       <base-button text="voltar" variant="light" @click.prevent="handleBack" />
       <base-button text="continuar" />
-    </div>
-  </form>
+    </template>
+  </base-form>
 </template>
 
 <script setup>
-import { AUTH_SECTIONS, PATTERN_CNPJ, PATTERN_PHONE } from '@/app/constants/auth'
-import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
+import { reactive } from 'vue'
 import BaseButton from '@/views/components/BaseButton.vue'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
-import { reactive } from 'vue'
+import BaseForm from '@/views/components/BaseForm.vue'
+import { AUTH_SECTIONS, PATTERN_CNPJ, PATTERN_PHONE } from '@/app/constants/auth'
+import { parseToBrazilianFormat, parseToISO8601 } from '@/app/utils/date'
 
 const emit = defineEmits(['back', 'next'])
 
@@ -73,23 +73,10 @@ function handleNext() {
 </script>
 
 <style lang="scss" scoped>
-.section-company {
-  &__title {
-    margin-bottom: 1.25rem;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin: 1.25rem 0;
-  }
-
-  &__buttons {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    gap: 1rem;
-  }
+.form-company {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 1.25rem 0;
 }
 </style>

@@ -1,39 +1,31 @@
 <template>
-  <form ref="passForm" class="section-password" @submit.prevent="submit">
-    <slot>
-      <h2 class="section-password__title">Senha de acesso</h2>
-    </slot>
-
-    <div class="section-password__form">
-      <base-input
-        v-model="payload.password"
-        :pattern="PATTERN_PASSWORD"
-        id="password"
-        type="password"
-        label="Sua senha"
-        auto-complete="new-password"
-        required
-      />
-    </div>
-
-    <div class="section-password__buttons">
+  <base-form title="Senha de acesso" current-step="3" steps="4" @submit="submit">
+    <base-input
+      v-model="payload.password"
+      :pattern="PATTERN_PASSWORD"
+      id="password"
+      type="password"
+      label="Sua senha"
+      auto-complete="new-password"
+      required
+    />
+    <template #button>
       <base-button text="voltar" variant="light" @click.prevent="handleBack" />
       <base-button text="continuar" />
-    </div>
-  </form>
+    </template>
+  </base-form>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { AUTH_SECTIONS, IDENTiFICATION_TYPE, PATTERN_PASSWORD } from '@/app/constants/auth'
+import { reactive } from 'vue'
 import BaseButton from '@/views/components/BaseButton.vue'
 import BaseInput from '@/views/components/inputs/BaseInput.vue'
+import BaseForm from '@/views/components/BaseForm.vue'
+import { AUTH_SECTIONS, IDENTiFICATION_TYPE, PATTERN_PASSWORD } from '@/app/constants/auth'
 
 const props = defineProps({
   payload: Object
 })
-
-const passForm = ref(null)
 
 const payload = reactive({
   password: props.payload.password
@@ -51,19 +43,3 @@ function handleBack() {
   return emit('back', AUTH_SECTIONS.COMPANY)
 }
 </script>
-
-<style lang="scss">
-.section-password {
-  &__title {
-    margin-bottom: 1.25rem;
-  }
-
-  &__buttons {
-    margin-top: 1.25rem;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    gap: 1rem;
-  }
-}
-</style>
