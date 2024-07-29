@@ -2,7 +2,7 @@
   <section class="auth">
     <div class="auth__container">
       <transition :name="transition" mode="out-in">
-        <component :is="currentSection" :payload :loading @next="handleNext" @back="handleBack" />
+        <component :is="currentSection" :payload @next="handleNext" @back="handleBack" />
       </transition>
     </div>
   </section>
@@ -39,7 +39,6 @@ const payload = ref({
 })
 
 const currentSection = shallowRef(SECTION_ENUM.EMAIL)
-const loading = shallowRef(false)
 const transition = shallowRef('go')
 
 function handleNext({ payload: values, nextSection }) {
