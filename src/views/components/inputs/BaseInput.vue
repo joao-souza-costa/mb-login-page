@@ -105,6 +105,13 @@ function handleMessage(validity) {
   const key = getInputErrorKey(validity)
   return MESSAGES[props.type]?.[key] || GENERAL_INPUT_MESSAGES[key].replace('$1', props.example)
 }
+
+const setCustomValidity = (customMessage) => {
+  message.value = customMessage
+  return el.value.setCustomValidity(customMessage)
+}
+
+defineExpose({ setCustomValidity })
 </script>
 
 <style lang="scss" scoped>
